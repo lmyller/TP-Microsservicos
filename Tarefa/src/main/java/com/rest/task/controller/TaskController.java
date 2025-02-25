@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,33 +28,29 @@ public class TaskController {
 	public TaskController(TaskService taskService) {
 		this.taskService = taskService;
 	}
-	
+
 	@GetMapping("/tasks")
-	public List<Task> findAll(){
-		return taskService.findAll();
+	public ResponseEntity<List<Task>> findAll(){
+		return ResponseEntity.ok(taskService.findAll());
 	}
 	
 	@GetMapping("/tasks/{taskId}")
-	public Task getTask(@PathVariable Long taskId) {
-		try {
-			return taskService.findById(taskId);
-		} catch (NoSuchElementException noSuchElementException) {
-			throw new RuntimeException("Tarefa não registrada");
-		}
+	public ResponseEntity<Task> getTask(@PathVariable Long taskId) {
+		return ResponseEntity.ok(taskService.findById(taskId));
 	}
 	
 	@PostMapping("/tasks")
-	public Task addTask(@RequestBody Task task) {
-		return taskService.save(task);
+	public ResponseEntity<Task> addTask(@RequestBody Task task) {
+		 return ResponseEntity.ok(taskService.save(task));
 	}
 	
 	@PutMapping("/tasks")
-	public Task updateTask(@RequestBody Task task) {
-		return taskService.save(task);
+	public ResponseEntity<Task> updateTask(@RequestBody Task task) {
+		return ResponseEntity.ok(taskService.save(task));
 	}
 	
 	@DeleteMapping("/tasks")
-	public Task deleteTask(@RequestBody Task task) {
-		return taskService.delete(task);
+	public ResponseEntity<Task> deleteTask(@RequestBody Task task) {
+		return ResponseEntity.ok(taskService.delete(task));
 	}
 }
